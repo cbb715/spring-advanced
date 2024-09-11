@@ -27,6 +27,7 @@ public class AuthService {
     @Transactional
     public SignupResponse signup(SignupRequest signupRequest) {
 
+        // 레벨 1-1 코드 개선 퀴즈 - Early Return
         // 이메일이 있는지 먼저 확인
         String email = signupRequest.getEmail();
         if (email == null || email.isEmpty()) {

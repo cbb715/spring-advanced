@@ -1,5 +1,6 @@
 package org.example.expert.domain.auth.service;
 
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.config.JwtUtil;
 import org.example.expert.config.PasswordEncoder;
@@ -23,6 +24,11 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
+
+    public long getUserIdFromToken(String bearerToken) {
+        Claims claims = jwtUtil.extractClaims(bearerToken.substring(7));
+        return Long.parseLong(claims.getSubject());
+    }
 
     @Transactional
     public SignupResponse signup(SignupRequest signupRequest) {

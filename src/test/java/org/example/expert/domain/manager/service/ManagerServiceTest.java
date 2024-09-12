@@ -50,6 +50,7 @@ class ManagerServiceTest {
         assertEquals("Todo not found", exception.getMessage());
     }
 
+    // 레벨 2-8 유닛 테스트 - 3
     @Test
     void todo의_user가_null인_경우_예외가_발생한다() {
         // given

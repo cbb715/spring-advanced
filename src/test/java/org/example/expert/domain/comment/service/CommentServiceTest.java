@@ -5,6 +5,7 @@ import org.example.expert.domain.comment.dto.response.CommentSaveResponse;
 import org.example.expert.domain.comment.entity.Comment;
 import org.example.expert.domain.comment.repository.CommentRepository;
 import org.example.expert.domain.common.dto.AuthUser;
+import org.example.expert.domain.common.exception.InvalidRequestException;
 import org.example.expert.domain.common.exception.ServerException;
 import org.example.expert.domain.todo.entity.Todo;
 import org.example.expert.domain.todo.repository.TodoRepository;
@@ -33,21 +34,22 @@ class CommentServiceTest {
     @InjectMocks
     private CommentService commentService;
 
+    // 레벨 2-7 유닛 테스트 - 2
     @Test
-    public void comment_등록_중_할일을_찾지_못해_에러가_발생한다() {
-        // given
+    public void comment_등록_중_할일을_찾지_못해_InvalidRequestException_에러가_발생한다() {
+        // given : 어떤 배경이나 상태가 주어졌을 때
         long todoId = 1;
         CommentSaveRequest request = new CommentSaveRequest("contents");
         AuthUser authUser = new AuthUser(1L, "email", UserRole.USER);
 
         given(todoRepository.findById(anyLong())).willReturn(Optional.empty());
 
-        // when
-        ServerException exception = assertThrows(ServerException.class, () -> {
+        // when : 어떤 행동을 실행하면
+        InvalidRequestException exception = assertThrows(InvalidRequestException.class, () -> {
             commentService.saveComment(authUser, todoId, request);
         });
 
-        // then
+        // then : 예상한 결과가 맞는지 확인한다
         assertEquals("Todo not found", exception.getMessage());
     }
 
